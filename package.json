@@ -2,11 +2,12 @@
   "name": "fastline",
   "version": "1.0.0",
   "description": "A platform as a service to setup the website lifecycle",
-  "main": "./lib/index.js",
+  "main": "./lib/bundle.js",
   "files": [
     "/lib"
   ],
   "scripts": {
+    "prepublish": "rollup --config",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "changelog:init": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "release:init": "npm run standard-changelog:init && npm run changelog:init",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
+    "@rollup/plugin-node-resolve": "^7.1.1",
     "babel-jest": "^25.1.0",
     "conventional-changelog-cli": "^2.0.31",
     "eslint": "6.8.0",
@@ -48,6 +50,8 @@
     "prettier": "1.19.1",
     "prettier-eslint": "^9.0.1",
     "prettier-eslint-cli": "^5.0.0",
+    "rollup": "^1.31.0",
+    "rollup-plugin-babel": "^4.3.3",
     "standard-changelog": "^2.0.21",
     "standard-version": "^7.0.1"
   },
@@ -61,5 +65,8 @@
       "prettier-eslint --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "inquirer": "^7.0.4"
   }
 }
