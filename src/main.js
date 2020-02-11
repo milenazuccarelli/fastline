@@ -1,4 +1,6 @@
-import inquirer from "inquirer";
+"use strict";
+
+const inquirer = require("inquirer");
 
 export default () => {
   const questions = [
