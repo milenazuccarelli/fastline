@@ -29,7 +29,7 @@
     "continuous-delivery"
   ],
   "author": "info@alessandrobarbieri.net",
-  "license": "ISC",
+  "license": "GNU GPL",
   "bugs": {
     "url": "https://github.com/a-barbieri/fastline/issues"
   },
