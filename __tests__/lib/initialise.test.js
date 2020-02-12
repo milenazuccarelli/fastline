@@ -4,9 +4,9 @@ import rimraf from "rimraf";
 import { uuid } from "uuidv4";
 import { setup } from "../../src/lib/initalise";
 import { getRandomInt } from "../../src/utils/common-functions";
+import { FL } from "../../src/config/init";
 
 const DIR_BASE = path.resolve(__dirname, "../../__fixtures__");
-const TEMPLATES_DIR = path.resolve(__dirname, "../../templates");
 
 let filesList,
   DIR_ID,
@@ -24,7 +24,7 @@ afterAll(done => {
 
 describe("Initialise", () => {
   it("has some templates files to copy", async () => {
-    await fs.promises.readdir(TEMPLATES_DIR).then(files => {
+    await fs.promises.readdir(FL.TEMPLATES_DIR).then(files => {
       filesList = files;
     });
     expect(filesList.length).toBeGreaterThan(0);
@@ -34,7 +34,7 @@ describe("Initialise", () => {
     beforeEach(async () => {
       DIR_ID = uuid();
       DIR = path.resolve(DIR_BASE, `initialise-${DIR_ID}`);
-      await fs.promises.readdir(TEMPLATES_DIR).then(files => {
+      await fs.promises.readdir(FL.TEMPLATES_DIR).then(files => {
         filesList = files;
       });
       await setup(DIR);
@@ -50,7 +50,7 @@ describe("Initialise", () => {
     it("copies all templates", async () => {
       DIR_ID = uuid();
       DIR = path.resolve(DIR_BASE, `initialise-${DIR_ID}`);
-      await fs.promises.readdir(TEMPLATES_DIR).then(files => {
+      await fs.promises.readdir(FL.TEMPLATES_DIR).then(files => {
         originalFilesList = files;
       });
       await setup(DIR);
@@ -65,7 +65,7 @@ describe("Initialise", () => {
     beforeEach(async () => {
       DIR_ID = uuid();
       DIR = path.resolve(DIR_BASE, `initialise-${DIR_ID}`);
-      await fs.promises.readdir(TEMPLATES_DIR).then(files => {
+      await fs.promises.readdir(FL.TEMPLATES_DIR).then(files => {
         originalFilesList = files;
       });
       randomIndex = getRandomInt(originalFilesList.length);
