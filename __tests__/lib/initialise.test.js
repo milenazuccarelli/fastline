@@ -1,9 +1,16 @@
 import fs from "fs";
 import path from "path";
+import rimraf from "rimraf";
 import { uuid } from "uuidv4";
 import { setup } from "../../src/lib/initalise";
 
-const DIR_BASE = path.resolve(__dirname, "../../__fixtures__/initialise");
+const DIR_BASE = path.resolve(__dirname, "../../__fixtures__");
+
+afterAll(done => {
+  rimraf(`${DIR_BASE}/initialise-*`, () => {
+    done();
+  });
+});
 
 describe("Initialise", () => {
   describe("when there is no setup", () => {
