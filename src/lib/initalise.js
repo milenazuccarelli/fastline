@@ -21,7 +21,7 @@ export async function setup(targetDir) {
     })
     .catch(err => {
       console.log(
-        `Could not copy ${fileName}. Probably the file is already present in the destination directory.`
+        `Could not copy ${fileName}. Probably the file doesn't exists or a copy is already present in the destination directory.`
       );
     });
 }
