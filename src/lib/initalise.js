@@ -5,19 +5,22 @@ import { FL } from "../config/init";
  * Setup
  *
  * @return {Promise}
- * @param targetDir {String}
+ * @param destDir {String}
  **/
-export async function setup(targetDir) {
+export async function setup(destDir) {
+  // Get filename.
   const fileName = "hello-world.md";
-  await fs.promises.mkdir(targetDir, { recursive: true });
+  // Create the destination directory.
+  await fs.promises.mkdir(destDir, { recursive: true });
+  // Copy the file to destination directory.
   return fs.promises
     .copyFile(
       `${FL.TEMPLATES_DIR}/${fileName}`,
-      `${targetDir}/${fileName}`,
+      `${destDir}/${fileName}`,
       fs.constants.COPYFILE_EXCL
     )
     .then(() => {
-      console.log(`${fileName} has been copied to ${targetDir}.`);
+      console.log(`${fileName} has been copied to ${destDir}.`);
     })
     .catch(err => {
       console.log(
