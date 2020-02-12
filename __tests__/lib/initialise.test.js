@@ -1,6 +1,6 @@
-const { uuid } = require("uuidv4");
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { uuid } from "uuidv4";
 import { setup } from "../../src/lib/initalise";
 
 const DIR_BASE = path.resolve(__dirname, "../../__fixtures__/initialise");

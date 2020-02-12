@@ -1,5 +1,5 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 /**
  * Setup
@@ -7,7 +7,7 @@ const path = require("path");
  * @return {Promise}
  * @param targetDir {String}
  **/
-async function setup(targetDir) {
+export async function setup(targetDir) {
   const templatesDir = path.resolve(__dirname, "../../templates");
   await fs.promises.mkdir(targetDir, { recursive: true });
   return fs.promises.copyFile(
@@ -16,7 +16,3 @@ async function setup(targetDir) {
     fs.constants.COPYFILE_EXCL
   );
 }
-
-module.exports = {
-  setup
-};
