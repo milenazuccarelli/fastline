@@ -4,7 +4,3 @@
 # NodeJS files
 /node_modules
 yarn-error.log
-
-# Do not store bundled files in repo (see `/lib`).
-# You will find them in the NPM package once precompiled.
-/lib
