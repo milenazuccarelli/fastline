@@ -1,30 +1,30 @@
-import fs from "fs";
+import fse from "fs-extra";
 import { FL } from "../config/init";
 
 /**
  * Setup
  *
- * @return {Promise}
  * @param destDir {String}
+ * @param target {String}
+ * @return {Promise}
  **/
-export async function setup(destDir) {
-  // Get filename.
-  const fileName = "hello-world.md";
-  // Create the destination directory.
-  await fs.promises.mkdir(destDir, { recursive: true });
-  // Copy the file to destination directory.
-  return fs.promises
-    .copyFile(
-      `${FL.TEMPLATES_DIR}/${fileName}`,
-      `${destDir}/${fileName}`,
-      fs.constants.COPYFILE_EXCL
-    )
+export async function setup(destDir, target) {
+  if (typeof destDir !== "string" || typeof target !== "string") {
+    throw new Error(
+      "Cannot execute 'setup' function. Make sure you provide destination directory and the target file or directory."
+    );
+  }
+  const sourceDir = FL.TEMPLATES_DIR;
+
+  return fse
+    .copy(`${sourceDir}/${target}`, `${destDir}/${target}`, {
+      overwrite: false,
+      errorOnExist: true
+    })
     .then(() => {
-      console.log(`${fileName} has been copied to ${destDir}.`);
+      console.log(`${target} has been copied to ${destDir}.`);
     })
     .catch(err => {
-      console.log(
-        `Could not copy ${fileName}. Probably the file doesn't exists or a copy is already present in the destination directory.`
-      );
+      console.warn(err);
     });
 }

@@ -1,0 +1,74 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: ./app
+    volumes:
+      - /usr/src/app/node_modules
+      - ./app:/usr/src/app
+    ports:
+      - "3000:3000"
+    environment:
+      WORDPRESS_API_URL: %%WORDPRESS_API_URL%%
+      SITE_URL: "http://localhost:3000"
+    secrets:
+      - app_wordpress_username
+      - app_wordpress_pwd
+
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: %%MYSQL_DATABASE%%
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+      MYSQL_USER_FILE: /run/secrets/mysql_user
+    volumes:
+      - db_data:/var/lib/mysql
+    secrets:
+      - mysql_root_password
+      - mysql_password
+      - mysql_user
+    ports:
+      - '3306:3306'
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - '3080:8080'
+
+  admin:
+    image: wordpress:latest
+    environment:
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_NAME: %%MYSQL_DATABASE%%
+      WORDPRESS_DB_USER_FILE: /run/secrets/mysql_user
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_password
+    depends_on:
+      - mariadb
+    ports:
+      - '8000:80'
+    restart: always
+    volumes:
+      - ./admin:/var/www/html
+    secrets:
+      - mysql_password
+      - mysql_user
+
+volumes:
+  db_data:
+
+secrets:
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
+  mysql_password:
+    file: ./secrets/mysql_password.txt
+  mysql_user:
+    file: ./secrets/mysql_user.txt
+  app_wordpress_username:
+    file: ./secrets/app_wordpress_username.txt
+  app_wordpress_pwd:
+    file: ./secrets/app_wordpress_pwd.txt

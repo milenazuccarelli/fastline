@@ -19,6 +19,17 @@ export class FL {
   static get TEMPLATES_DIR() {
     return path.resolve(__dirname, "../../templates");
   }
+  /**
+   * BASE_DIR constant
+   *
+   * @return {String} The absolute path of the directory in which package json is in.
+   * @example
+   *   console.log(FL.TEMPLATES_DIR);
+   *   // '/path/to/package/templates'
+   **/
+  static get BASE_DIR() {
+    return path.resolve(__dirname, "../../");
+  }
 }
 
 export const Fastline = new FL();
