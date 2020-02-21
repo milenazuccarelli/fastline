@@ -4,8 +4,8 @@ import { FL } from "../config/init";
 /**
  * Setup
  *
- * @param destDir {String}
- * @param target {String}
+ * @param destDir {String} Absolute path
+ * @param target {String} name of directory inside templates dir, eg. `my/path/to/file` (no initial slash)
  * @return {Promise}
  **/
 export async function setup(destDir, target) {
