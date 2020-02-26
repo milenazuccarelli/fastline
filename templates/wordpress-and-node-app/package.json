@@ -1,6 +1,6 @@
 {
   "name": "@fastline/wordpress-and-node-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A template for Fastline library which bootstrap a Docker setup with a Wordpress and a Node application. ",
   "main": "index.js",
   "scripts": {
