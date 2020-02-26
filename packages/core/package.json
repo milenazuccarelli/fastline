@@ -79,5 +79,6 @@
     "lodash": "^4.17.15",
     "uuidv4": "^6.0.2",
     "walkdir": "^0.4.1"
-  }
+  },
+  "gitHead": "bfac8c871aaed0b7363d16f15070eb47a8140d76"
 }

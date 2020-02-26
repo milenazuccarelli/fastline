@@ -12,5 +12,17 @@
     "node"
   ],
   "author": "info@alessandrobarbieri.net",
-  "license": "GPL-2.0-or-later"
+  "license": "GPL-2.0-or-later",
+  "gitHead": "bfac8c871aaed0b7363d16f15070eb47a8140d76",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a-barbieri/fastline.git"
+  },
+  "bugs": {
+    "url": "https://github.com/a-barbieri/fastline/issues"
+  },
+  "homepage": "https://github.com/a-barbieri/fastline#readme",
+  "engines": {
+    "node": ">=10"
+  }
 }
