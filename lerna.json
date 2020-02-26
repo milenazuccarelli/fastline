@@ -3,5 +3,8 @@
     "packages/*",
     "templates/*"
   ],
-  "version": "independent"
+  "version": "independent",
+  "publishConfig": {
+    "access": "public"
+  }
 }
