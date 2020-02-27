@@ -45,6 +45,21 @@ describe("Initialise", () => {
     beforeEach(async () => {
       DIR_ID = uuid();
       DIR = path.resolve(DIR_BASE, `initialise-${DIR_ID}`);
+
+      originalFilesList = await walk(sourceDir, {
+        source: sourceDir,
+        with: ""
+      });
+      fakeFileRelativePath =
+        originalFilesList[getRandomInt(originalFilesList.length)];
+      await fse.mkdir(DIR, { recursive: true });
+      fakeContent = `This is some fake content. #${DIR_ID}`;
+      const fakeExistingFile = fse.createWriteStream(
+        `${DIR}${fakeFileRelativePath}`
+      );
+      fakeExistingFile.write(fakeContent);
+      fakeExistingFile.end();
+
       await setup(DIR, target);
     });
 
@@ -60,7 +75,14 @@ describe("Initialise", () => {
       expect(targetFilesList).toEqual(originalFilesList);
     });
 
-    it.skip("replaces all occurrences found on the fastline config file", () => {});
+    it("replaces all occurrences found on the fastline config file", async () => {
+      return fse
+        .readFile(`${DIR}${fakeFileRelativePath}`, "utf8")
+        .then(data => {
+          let replacementContent = data.replace(/fake/g, "fakee");
+          expect(replacementContent).toEqual(fakeContent);
+        });
+    });
   });
 
   describe("when a setup already exists", () => {
