@@ -55,7 +55,6 @@ async function setUpDirectory(destDir, target, keys, patterns, replacements) {
 
         fse.readFile(file, "utf8", (err, data) => {
           if (err) return console.error(err);
-          console.log(data); // => replaced file
         });
       });
     });

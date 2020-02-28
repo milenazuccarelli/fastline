@@ -24,7 +24,6 @@ export default async () => {
   // loop through the keys for the specified template
   for (let key in template) {
     // template[key] is the field in the object i.e. %%PROXY%%
-    console.log(key, template[key]);
     // prompt the user for the desired replacement
     const { target } = await getVariableReplacement(key, template[key]);
     // store the replacement in a new object, with the same
