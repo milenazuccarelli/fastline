@@ -1,1 +1,6 @@
-node_modules/
+# Editor files
+.idea
+
+# NodeJS files
+/node_modules
+yarn-error.log
