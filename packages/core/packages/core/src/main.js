@@ -4,7 +4,7 @@ const inquirer = require("inquirer");
 import { FL } from "./config/init";
 import { setup } from "./lib/initalise";
 import { walkDir } from "./utils/common-functions";
-import { templates } from "./templates.js";
+import { templates } from "./templates.js.js";
 
 export default async () => {
   const firstAnswers = await getFirstAnswers();

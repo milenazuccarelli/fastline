@@ -17,7 +17,7 @@ export class FL {
    *   // '/path/to/package/templates'
    **/
   static get TEMPLATES_DIR() {
-    return path.resolve(this.BASE_DIR, "./templates");
+    return path.resolve(this.BASE_DIR, "./packages/core/templates");
   }
 
   /**
