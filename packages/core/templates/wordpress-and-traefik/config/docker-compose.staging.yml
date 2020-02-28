@@ -1,0 +1,63 @@
+version: "3.7"
+
+services:
+  app:
+    image: "eu.gcr.io/lacolonia/%%BITBUCKET_REPO%%:staging"
+    networks:
+      - overlord_proxy
+    restart: always
+
+  mariadb:
+    image: mariadb
+    networks:
+      - overlord_proxy
+    restart: always
+    environment:
+      MYSQL_DATABASE: %%PROJECT_NAME%%_staging
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/staging_mysql_root_password
+      MYSQL_PASSWORD_FILE: /run/secrets/staging_mysql_password
+      MYSQL_USER_FILE: /run/secrets/staging_mysql_user
+    volumes:
+      - staging_db_data:/var/lib/mysql
+    secrets:
+      - staging_mysql_root_password
+      - staging_mysql_password
+      - staging_mysql_user
+
+adminer:
+  image: adminer
+  networks:
+    - overlord_proxy
+  restart: always
+
+admin:
+  image: wordpress:5.3-php7.2-apache
+  networks:
+    - overlord_proxy
+  environment:
+    WORDPRESS_DB_HOST: mariadb:3306
+    WORDPRESS_DB_NAME: %%PROJECT_NAME%%_staging
+    WORDPRESS_DB_USER_FILE: /run/secrets/staging_mysql_user
+    WORDPRESS_DB_PASSWORD_FILE: /run/secrets/staging_mysql_password
+  volumes:
+    - staging_wp_data:/var/www/html
+  secrets:
+    - staging_mysql_password
+    - staging_mysql_user
+
+volumes:
+  staging_wp_data:
+  staging_db_data:
+
+networks:
+  overlord_proxy:
+    external: true
+  staging:
+
+secrets:
+  staging_mysql_root_password:
+    file: ./secrets/staging_mysql_root_password.txt
+  staging_mysql_password:
+    file: ./secrets/staging_mysql_password.txt
+  staging_mysql_user:
+    file: ./secrets/staging_mysql_user.txt
