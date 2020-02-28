@@ -28,15 +28,17 @@ async function setUpDirectory(destDir, target, keys, patterns, replacements) {
 
   configuration.forEach(async file => {
     // first, copy the file
-    await fse
-      .copy(file, `${target}/${destDir}/${path.basename(file)}`, {
+    await fse.copy(
+      file,
+      `${target}/${destDir}/${path.basename(file)}`,
+      {
         overwrite: false,
         errorOnExist: true
-      })
-      .then(() => {})
-      .catch(err => {
-        console.warn(err);
-      });
+      },
+      err => {
+        if (err) return console.error(err);
+      }
+    );
 
     // replace our variables and write to the file
     await fse.readFile(file, "utf8").then(data => {
