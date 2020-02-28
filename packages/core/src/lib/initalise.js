@@ -22,15 +22,16 @@ export async function setup(destDir, target, keys, patterns, replacements) {
 
 async function setUpDirectory(destDir, target, keys, patterns, replacements) {
   const sourceDir = FL.TEMPLATES_DIR;
-
-  // go through all the files
   let configuration = await walk(`${sourceDir}/${destDir}/config`);
 
   configuration.forEach(async file => {
+    // construct the directory tree
+    let pathTree = path.relative(`${sourceDir}/${destDir}/config`, file);
+
     // first, copy the file
     await fse.copy(
       file,
-      `${target}/${destDir}/${path.basename(file)}`,
+      `${target}/${destDir}/${pathTree}`,
       {
         overwrite: false,
         errorOnExist: true
