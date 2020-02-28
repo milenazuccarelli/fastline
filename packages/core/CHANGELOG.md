@@ -8,12 +8,14 @@
 * circle-ci file in wrong dir ([70a123c](https://github.com/a-barbieri/fastline/commit/70a123c89154d72dae693c94aa7c14559b5f1ae8))
 * file structure ([8614651](https://github.com/a-barbieri/fastline/commit/86146512d4b8ad62f7a8a817364981f64b5f8248))
 * inquirer doesn't have default export ([fbd86b4](https://github.com/a-barbieri/fastline/commit/fbd86b4349b97dee3894d9c88673c3493548f68e))
+* templates import ([357650f](https://github.com/a-barbieri/fastline/commit/357650fa7a671920bba6d14d7f1413865c6d617c))
 
 
 ### Features
 
 * add babel configuration for Jest ([b3296a4](https://github.com/a-barbieri/fastline/commit/b3296a461075135250e682d5ca5b0d22321d5d00))
 * add circle-ci settings for CI ([91d40df](https://github.com/a-barbieri/fastline/commit/91d40dfa5b758950bd6d3d5296b7b1eef39a5b5d))
+* add folder structure to copied files ([cf00567](https://github.com/a-barbieri/fastline/commit/cf00567d40c56f47f79652884567ddf1696428ef))
 * add helper function ([b7e463b](https://github.com/a-barbieri/fastline/commit/b7e463b17fede56ffd75612ebf654703bbfbaf69))
 * add index.js with dummy export to check if working ([668649b](https://github.com/a-barbieri/fastline/commit/668649b22f320a86f3749f5fc5afd9b6730f06e7))
 * add Jest as test suite ([bc85b66](https://github.com/a-barbieri/fastline/commit/bc85b660d88be52e41cd5bcb58da151db3fc0844))
