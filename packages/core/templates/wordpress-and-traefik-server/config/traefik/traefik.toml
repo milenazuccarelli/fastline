@@ -1,0 +1,35 @@
+[log]
+  level = "DEBUG"
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+  [entryPoints.websecure]
+    address = ":443"
+  [entryPoints.app]
+    address = ":3000"
+  [entryPoints.mariadb]
+    address = ":3306"
+  [entryPoints.admin]
+    address = ":8081"
+  [entryPoints.adminer]
+    address = ":8080"
+
+[providers]
+  [providers.docker]
+    endpoint = "unix:///var/run/docker.sock"
+    network = "overlord_proxy"
+    swarmMode = true
+    exposedByDefault = true
+  # Enable the file provider to define routers / middlewares / services in a file
+  [providers.file]
+    debugLogGeneratedTemplate = true
+    directory = "/etc/traefik/dynamic"
+    watch = true
+
+[certificatesResolvers]
+  [certificatesResolvers.mytlschallenge]
+    [certificatesResolvers.mytlschallenge.acme]
+      email = "mail@lacolonia.studio"
+      storage = "/letsencrypt/acme.json"
+      tlschallenge = true

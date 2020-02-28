@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+  proxy:
+    image: traefik:v2.0.2
+    volumes:
+      # connect to docker socket for Traefik to listen to docker events
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      # static configuration file
+      - "./traefik/traefik.toml:/etc/traefik/traefik.toml"
+      # dynamic configuration directory
+      - "./traefik/dynamic/:/etc/traefik/dynamic/"
+      # Store certificates in ./letsencrypt/acme.json
+      - "./letsencrypt:/letsencrypt"
+    networks:
+    - proxy
+    ports:
+      - "443:443"
+      - "80:80"
+      - "3000:3000"
+      - "8000:8000"
+      - "8080:8080"
+      - "8081:8081"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+
+  whoami:
+    image: jwilder/whoami
+    networks:
+    - proxy
+
+networks:
+  proxy:
+    driver: overlay
