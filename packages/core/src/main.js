@@ -4,7 +4,7 @@ const inquirer = require("inquirer");
 import { FL } from "./config/init";
 import { setup } from "./lib/initalise";
 import { walkDir } from "./utils/common-functions";
-import { templates } from "./templates.js.js.js";
+import { templates } from "./templates.js";
 
 export default async () => {
   const firstAnswers = await getFirstAnswers();
@@ -17,6 +17,7 @@ export default async () => {
 
   // get the items that need to be replaced
   // depending on the template type
+  // TODO: template object should be taken from each template package
   const template = templates[templateName];
   let replacements = {};
 
