@@ -3,21 +3,17 @@ const inquirer = require("inquirer");
 
 import { FL } from "./config/init";
 import { setup } from "./lib/initalise";
-import { walk } from "./utils/common-functions";
+import { walkDir } from "./utils/common-functions";
 import { templates } from "./templates.js";
 
 export default async () => {
   const firstAnswers = await getFirstAnswers();
 
-  const walker = await walk(firstAnswers["templates"], {
-    source: firstAnswers["templates"],
-    with: ""
-  });
+  const walker = await walkDir(firstAnswers["templates"]);
 
   const secondAnswers = await getSecondAnswers(walker);
 
-  // hardcoded, but would be gathered from user input
-  const templateName = "wordpress-and-node-app";
+  const templateName = secondAnswers["destDir"];
 
   // get the items that need to be replaced
   // depending on the template type
@@ -38,21 +34,29 @@ export default async () => {
   // for demo purposes, print the user inputs
   // replacements.forEach((r) => console.log(r));
 
+  let keys = [];
+  let regexPatterns = [];
+  let userInputReplacement = [];
+
   // for demo purposes
   // loop through the template again
   for (let key in template) {
+    keys.push(key);
+
     // get the pattern to be replaced
     let pattern = template[key];
+    regexPatterns.push(pattern);
+
     // get the replacement
     let replacement = replacements[key];
-    console.log(key, pattern, replacement);
+    userInputReplacement.push(replacement);
   }
 
-  const target = firstAnswers["target"];
   const destDir = secondAnswers["destDir"];
+  const target = firstAnswers["target"];
 
   // run the setup based on these answers
-  setup(target, destDir);
+  setup(destDir, target, keys, regexPatterns, userInputReplacement);
 };
 
 async function getFirstAnswers() {

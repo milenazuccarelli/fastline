@@ -68,3 +68,26 @@ export async function walk(dir, replacePath = {}) {
 
   return files.reduce((all, folderContents) => all.concat(folderContents), []);
 }
+
+/**
+ * WALK DIR
+ *
+ * @param dir {String} Directory to walk through
+ *
+ * @return {Array} Array of the paths of all files found
+ **/
+export async function walkDir(dir) {
+  let files = await fse.readdir(dir);
+  files = await Promise.all(
+    files.map(async file => {
+      const filePath = path.join(dir, file);
+      const stats = await fse.stat(filePath);
+
+      if (stats.isDirectory()) {
+        return file;
+      }
+    })
+  );
+
+  return files.reduce((all, folderContents) => all.concat(folderContents), []);
+}
