@@ -2,17 +2,30 @@
   level = "DEBUG"
 
 [entryPoints]
-  [entryPoints.web]
+  [entryPoints.%%PROJECT_NAME%%_production_web]
     address = ":80"
-  [entryPoints.websecure]
+  [entryPoints.%%PROJECT_NAME%%_production_websecure]
     address = ":443"
-  [entryPoints.app]
+  [entryPoints.%%PROJECT_NAME%%_production_app]
     address = ":3000"
-  [entryPoints.mariadb]
+  [entryPoints.%%PROJECT_NAME%%_production_mariadb]
     address = ":3306"
-  [entryPoints.admin]
+  [entryPoints.%%PROJECT_NAME%%_production_admin]
     address = ":8081"
-  [entryPoints.adminer]
+  [entryPoints.%%PROJECT_NAME%%_production_adminer]
+    address = ":8080"
+
+  [entryPoints.%%PROJECT_NAME%%_staging_web]
+    address = ":80"
+  [entryPoints.%%PROJECT_NAME%%_staging_websecure]
+    address = ":443"
+  [entryPoints.%%PROJECT_NAME%%_staging_app]
+    address = ":3000"
+  [entryPoints.%%PROJECT_NAME%%_staging_mariadb]
+    address = ":3306"
+  [entryPoints.%%PROJECT_NAME%%_staging_admin]
+    address = ":8081"
+  [entryPoints.%%PROJECT_NAME%%_staging_adminer]
     address = ":8080"
 
 [providers]
