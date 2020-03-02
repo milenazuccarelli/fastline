@@ -37,7 +37,7 @@ async function setUpDirectory(destDir, target, keys, patterns, replacements) {
         errorOnExist: true
       },
       err => {
-        if (err) return console.error(err);
+        if (err) return "This template already exists";
       }
     );
 
@@ -54,7 +54,7 @@ async function setUpDirectory(destDir, target, keys, patterns, replacements) {
         console.log(err); // => null
 
         fse.readFile(file, "utf8", (err, data) => {
-          if (err) return console.error(err);
+          if (err) return err;
         });
       });
     });
