@@ -27,7 +27,7 @@ async function setUpDirectory(destDir, target, keys, patterns, replacements) {
   configuration.forEach(async file => {
     // construct the directory tree
     let pathTree = path.relative(`${sourceDir}/${destDir}/config`, file);
-    let pathToWrite = `${target}/${destDir}/${pathTree}`;
+    let pathToWrite = `${target}/${pathTree}`;
 
     // first, copy the file
     await fse.copy(file, pathToWrite, {
