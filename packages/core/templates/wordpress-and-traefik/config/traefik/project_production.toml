@@ -3,26 +3,26 @@
 [http]
   [http.routers]
     [http.routers.%%PROJECT_NAME%%_production_app]
-      entryPoints = ["%%PROJECT_NAME%%_production_app"]
+      entryPoints = ["web"]
       rule = "Host(`%%PRODUCTION_URL_APP%%`)"
       service = "%%PROJECT_NAME%%_production_app"
       middlewares = ["httpsredirect"]
 
     [http.routers.%%PROJECT_NAME%%_production_app-secure]
-      entryPoints = ["%%PROJECT_NAME%%_production_app"]
+      entryPoints = ["websecure"]
       rule = "Host(`%%PRODUCTION_URL_APP%%`)"
       service = "%%PROJECT_NAME%%_production_app"
       [http.routers.%%PROJECT_NAME%%_production_app-secure.tls]
         certResolver = "mytlschallenge"
 
     [http.routers.%%PROJECT_NAME%%_production_admin]
-      entryPoints = ["%%PROJECT_NAME%%_production_admin"]
+      entryPoints = ["web"]
       rule = "Host(`%%PRODUCTION_URL_ADMIN%%`)"
       service = "%%PROJECT_NAME%%_production_admin"
       middlewares = ["httpsredirect"]
 
     [http.routers.%%PROJECT_NAME%%_production_admin-secure]
-      entryPoints = ["%%PROJECT_NAME%%_production_admin"]
+      entryPoints = ["websecure"]
       rule = "Host(`%%PRODUCTION_URL_ADMIN%%`)"
       service = "%%PROJECT_NAME%%_production_admin"
       [http.routers.%%PROJECT_NAME%%_production_admin-secure.tls]

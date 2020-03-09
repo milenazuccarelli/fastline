@@ -9,7 +9,7 @@
       middlewares = ["httpsredirect"]
 
     [http.routers.%%PROJECT_NAME%%_staging_app-secure]
-      entryPoints = ["web-secure"]
+      entryPoints = ["websecure"]
       rule = "Host(`%%STAGING_URL_APP%%`)"
       service = "%%PROJECT_NAME%%_staging_app"
       [http.routers.%%PROJECT_NAME%%_staging_app-secure.tls]
@@ -22,7 +22,7 @@
       middlewares = ["httpsredirect"]
 
     [http.routers.%%PROJECT_NAME%%_staging_admin-secure]
-      entryPoints = ["web-secure"]
+      entryPoints = ["websecure"]
       rule = "Host(`%%STAGING_URL_ADMIN%%`)"
       service = "%%PROJECT_NAME%%_staging_admin"
       [http.routers.%%PROJECT_NAME%%_staging_admin-secure.tls]
