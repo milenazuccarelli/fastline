@@ -27,35 +27,32 @@ async function setUpDirectory(destDir, target, keys, patterns, replacements) {
   configuration.forEach(async file => {
     // construct the directory tree
     let pathTree = path.relative(`${sourceDir}/${destDir}/config`, file);
+    let pathToWrite = `${target}/${destDir}/${pathTree}`;
 
     // first, copy the file
-    await fse.copy(
-      file,
-      `${target}/${destDir}/${pathTree}`,
-      {
-        overwrite: false,
-        errorOnExist: true
-      },
-      err => {
-        if (err) return "This template already exists";
-      }
-    );
+    await fse.copy(file, pathToWrite, {
+      overwrite: false,
+      errorOnExist: true
+    });
 
-    // replace our variables and write to the file
-    await fse.readFile(file, "utf8").then(data => {
-      let newData;
+    let fileToWrite = await fse.readFile(pathToWrite, "utf8");
+    let convertedExpression;
 
-      for (let variable in keys) {
-        let myConvertedExpression = new RegExp(patterns[variable], "g");
-        newData = data.replace(myConvertedExpression, replacements[variable]);
-      }
+    for (let variable in keys) {
+      convertedExpression = new RegExp(patterns[variable], "g");
+      fileToWrite = fileToWrite.replace(
+        convertedExpression,
+        replacements[variable]
+      );
+    }
 
-      fse.outputFile(file, newData, err => {
-        console.log(err); // => null
+    // then overwrite
+    await fse.outputFile(pathToWrite, fileToWrite, err => {
+      // console.log(err); // => null
 
-        fse.readFile(file, "utf8", (err, data) => {
-          if (err) return err;
-        });
+      fse.readFile(fileToWrite, "utf8", (err, data) => {
+        if (err) return err;
+        // console.log(data); // => overwritten data
       });
     });
   });
