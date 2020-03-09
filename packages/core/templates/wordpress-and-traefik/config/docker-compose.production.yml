@@ -6,6 +6,15 @@ services:
     networks:
       - overlord_proxy
     restart: always
+    environment:
+      WORDPRESS_API_URL: "%%WORDPRESS_API_URL%%"
+      SITE_URL: "%%SITE_URL%%"
+      GA_ID: ""
+      WORDPRESS_USERNAME_FILE: /run/secrets/production_app_wordpress_username
+      WORDPRESS_PASSWORD_FILE: /run/secrets/production_app_wordpress_pwd
+    secrets:
+      - production_app_wordpress_username
+      - production_app_wordpress_pwd
 
   admin:
     image: wordpress:5.3-php7.2-apache
@@ -60,3 +69,7 @@ secrets:
     file: ./secrets/production_mysql_password.txt
   production_mysql_user:
     file: ./secrets/production_mysql_user.txt
+  production_app_wordpress_username:
+    file: ./secrets/production_app_wordpress_username.txt
+  production_app_wordpress_pwd:
+    file: ./secrets/production_app_wordpress_pwd.txt

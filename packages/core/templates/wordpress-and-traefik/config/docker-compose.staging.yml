@@ -6,6 +6,13 @@ services:
     networks:
       - overlord_proxy
     restart: always
+    WORDPRESS_API_URL: "%%WORDPRESS_API_URL%%"
+    SITE_URL: "%%SITE_URL%%"
+    WORDPRESS_USERNAME_FILE: /run/secrets/staging_app_wordpress_username
+    WORDPRESS_PASSWORD_FILE: /run/secrets/staging_app_wordpress_pwd
+  secrets:
+    - staging_app_wordpress_username
+    - staging_app_wordpress_pwd
 
   mariadb:
     image: mariadb
@@ -61,3 +68,8 @@ secrets:
     file: ./secrets/staging_mysql_password.txt
   staging_mysql_user:
     file: ./secrets/staging_mysql_user.txt
+  staging_app_wordpress_username:
+    file: ./secrets/staging_app_wordpress_username.txt
+  staging_app_wordpress_pwd:
+    file: ./secrets/staging_app_wordpress_pwd.txt
+    
