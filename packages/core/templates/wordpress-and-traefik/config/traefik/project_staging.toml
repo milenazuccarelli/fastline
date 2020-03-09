@@ -3,55 +3,29 @@
 [http]
   [http.routers]
     [http.routers.%%PROJECT_NAME%%_staging_app]
-      entryPoints = ["%%PROJECT_NAME%%_staging_app"]
-      rule = "Host(`%%STAGING_URL%%`)"
+      entryPoints = ["web"]
+      rule = "Host(`%%STAGING_URL_APP%%`)"
       service = "%%PROJECT_NAME%%_staging_app"
       middlewares = ["httpsredirect"]
 
     [http.routers.%%PROJECT_NAME%%_staging_app-secure]
-      entryPoints = ["%%PROJECT_NAME%%_staging_app"]
-      rule = "Host(`%%STAGING_URL%%`)"
+      entryPoints = ["web-secure"]
+      rule = "Host(`%%STAGING_URL_APP%%`)"
       service = "%%PROJECT_NAME%%_staging_app"
       [http.routers.%%PROJECT_NAME%%_staging_app-secure.tls]
         certResolver = "mytlschallenge"
 
-    [http.routers.%%PROJECT_NAME%%_staging_mariadb]
-      entryPoints = ["%%PROJECT_NAME%%_staging_mariadb"]
-      rule = "Host(`%%STAGING_URL%%`)"
-      service = "%%PROJECT_NAME%%_staging_mariadb"
-      middlewares = ["httpsredirect"]
-
-    [http.routers.%%PROJECT_NAME%%_staging_mariadb-secure]
-      entryPoints = ["%%PROJECT_NAME%%_staging_mariadb"]
-      rule = "Host(`%%STAGING_URL%%`)"
-      service = "%%PROJECT_NAME%%_staging_mariadb"
-      [http.routers.%%PROJECT_NAME%%_staging_mariadb-secure.tls]
-        certResolver = "mytlschallenge"
-
     [http.routers.%%PROJECT_NAME%%_staging_admin]
-      entryPoints = ["%%PROJECT_NAME%%_staging_admin"]
-      rule = "Host(`%%STAGING_URL%%`)"
+      entryPoints = ["web"]
+      rule = "Host(`%%STAGING_URL_ADMIN%%`)"
       service = "%%PROJECT_NAME%%_staging_admin"
       middlewares = ["httpsredirect"]
 
     [http.routers.%%PROJECT_NAME%%_staging_admin-secure]
-      entryPoints = ["%%PROJECT_NAME%%_staging_admin"]
-      rule = "Host(`%%STAGING_URL%%`)"
+      entryPoints = ["web-secure"]
+      rule = "Host(`%%STAGING_URL_ADMIN%%`)"
       service = "%%PROJECT_NAME%%_staging_admin"
       [http.routers.%%PROJECT_NAME%%_staging_admin-secure.tls]
-        certResolver = "mytlschallenge"
-
-    [http.routers.%%PROJECT_NAME%%_staging_adminer]
-      entryPoints = ["%%PROJECT_NAME%%_staging_adminer"]
-      rule = "Host(`%%STAGING_URL%%`)"
-      service = "%%PROJECT_NAME%%_staging_adminer"
-      middlewares = ["httpsredirect"]
-
-    [http.routers.%%PROJECT_NAME%%_staging_adminer-secure]
-      entryPoints = ["%%PROJECT_NAME%%_staging_adminer"]
-      rule = "Host(`%%STAGING_URL%%`)"
-      service = "%%PROJECT_NAME%%_staging_adminer"
-      [http.routers.%%PROJECT_NAME%%_staging_adminer-secure.tls]
         certResolver = "mytlschallenge"
 
   [http.services]
