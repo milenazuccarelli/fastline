@@ -2,8 +2,7 @@ version: "3.7"
 
 services:
   app:
-    # NOTE: there is no `_app`
-    image: "eu.gcr.io/lacolonia/%%PROJECT_NAME%%:production"
+    image: "eu.gcr.io/lacolonia/%%PROJECT_NAME%%_app:production"
     networks:
       - overlord_proxy
     restart: always
