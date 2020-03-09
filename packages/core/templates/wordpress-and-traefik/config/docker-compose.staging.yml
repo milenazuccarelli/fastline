@@ -1,13 +1,14 @@
 version: "3.7"
 
 services:
-  %%PROJECT_NAME%%_staging_app:
+  app:
+    # NOTE: there is no `_app`
     image: "eu.gcr.io/lacolonia/%%BITBUCKET_REPO%%:staging"
     networks:
       - overlord_proxy
     restart: always
 
-  %%PROJECT_NAME%%_staging_mariadb:
+  mariadb:
     image: mariadb
     networks:
       - overlord_proxy
@@ -24,13 +25,13 @@ services:
       - staging_mysql_password
       - staging_mysql_user
 
-  %%PROJECT_NAME%%_staging_adminer:
+  adminer:
     image: adminer
     networks:
       - overlord_proxy
     restart: always
 
-  %%PROJECT_NAME%%_staging_admin:
+  admin:
     image: wordpress:5.3-php7.2-apache
     networks:
       - overlord_proxy
