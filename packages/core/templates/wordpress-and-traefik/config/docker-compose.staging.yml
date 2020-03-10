@@ -51,6 +51,8 @@ services:
     secrets:
       - staging_mysql_password
       - staging_mysql_user
+    depends_on:
+      - mariadb
 
 volumes:
   staging_wp_data:

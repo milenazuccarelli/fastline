@@ -30,6 +30,8 @@ services:
     secrets:
       - production_mysql_password
       - production_mysql_user
+    depends_on:
+      - mariadb
 
   mariadb:
     image: mariadb
