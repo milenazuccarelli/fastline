@@ -30,28 +30,24 @@
 
   [http.services]
     [http.services.%%PROJECT_NAME%%_production_app]
-      enable = true
       [http.services.%%PROJECT_NAME%%_production_app.loadBalancer]
         [[http.services.%%PROJECT_NAME%%_production_app.loadBalancer.servers]]
           port = "3000"
-          url = "http://app:3000"
+          url = "http://%%PROJECT_NAME%%_production_app:3000"
 
     [http.services.%%PROJECT_NAME%%_production_mariadb]
-      enable = true
       [http.services.%%PROJECT_NAME%%_production_mariadb.loadBalancer]
         [[http.services.%%PROJECT_NAME%%_production_mariadb.loadBalancer.servers]]
           port = "3306"
           url = "http://%%PROJECT_NAME%%_production_mariadb:3306"
 
     [http.services.%%PROJECT_NAME%%_production_admin]
-      enable = true
       [http.services.%%PROJECT_NAME%%_production_admin.loadBalancer]
         [[http.services.%%PROJECT_NAME%%_production_admin.loadBalancer.servers]]
           port = "80"
           url = "http://%%PROJECT_NAME%%_production_admin:80"
 
     [http.services.%%PROJECT_NAME%%_production_adminer]
-      enable = true
       [http.services.%%PROJECT_NAME%%_production_adminer.loadBalancer]
         [[http.services.%%PROJECT_NAME%%_production_adminer.loadBalancer.servers]]
           port = "8080"

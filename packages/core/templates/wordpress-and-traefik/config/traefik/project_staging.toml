@@ -30,28 +30,24 @@
 
   [http.services]
     [http.services.%%PROJECT_NAME%%_staging_app]
-      enable = true
       [http.services.%%PROJECT_NAME%%_staging_app.loadBalancer]
         [[http.services.%%PROJECT_NAME%%_staging_app.loadBalancer.servers]]
           port = "3000"
-          url = "http://app:3000"
+          url = "http://%%PROJECT_NAME%%_staging_app:3000"
 
     [http.services.%%PROJECT_NAME%%_staging_mariadb]
-      enable = true
       [http.services.%%PROJECT_NAME%%_staging_mariadb.loadBalancer]
         [[http.services.%%PROJECT_NAME%%_staging_mariadb.loadBalancer.servers]]
           port = "3306"
           url = "http://%%PROJECT_NAME%%_staging_mariadb:3306"
 
     [http.services.%%PROJECT_NAME%%_staging_admin]
-      enable = true
       [http.services.%%PROJECT_NAME%%_staging_admin.loadBalancer]
         [[http.services.%%PROJECT_NAME%%_staging_admin.loadBalancer.servers]]
           port = "80"
           url = "http://%%PROJECT_NAME%%_staging_admin:80"
 
     [http.services.%%PROJECT_NAME%%_staging_adminer]
-      enable = true
       [http.services.%%PROJECT_NAME%%_staging_adminer.loadBalancer]
         [[http.services.%%PROJECT_NAME%%_staging_adminer.loadBalancer.servers]]
           port = "8080"
