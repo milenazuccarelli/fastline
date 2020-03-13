@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   app:
-    image: "eu.gcr.io/lacolonia/%%BITBUCKET_REPO%%_app:staging"
+    image: "eu.gcr.io/lacolonia/%%PROJECT_NAME%%_app:staging"
     networks:
       - overlord_proxy
     restart: always
