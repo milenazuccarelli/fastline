@@ -6,13 +6,14 @@ services:
     networks:
       - overlord_proxy
     restart: always
-    WORDPRESS_API_URL: "%%WORDPRESS_API_URL%%"
-    SITE_URL: "%%SITE_URL%%"
-    WORDPRESS_USERNAME_FILE: /run/secrets/staging_app_wordpress_username
-    WORDPRESS_PASSWORD_FILE: /run/secrets/staging_app_wordpress_pwd
+    environment:
+      WORDPRESS_API_URL: "%%WORDPRESS_API_URL%%"
+      SITE_URL: "%%SITE_URL%%"
+      WORDPRESS_USERNAME_FILE: /run/secrets/app_wordpress_username
+      WORDPRESS_PASSWORD_FILE: /run/secrets/app_wordpress_pwd
   secrets:
-    - staging_app_wordpress_username
-    - staging_app_wordpress_pwd
+    - app_wordpress_username
+    - app_wordpress_pwd
 
   mariadb:
     image: mariadb
@@ -21,15 +22,15 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: %%PROJECT_NAME%%_staging
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/staging_mysql_root_password
-      MYSQL_PASSWORD_FILE: /run/secrets/staging_mysql_password
-      MYSQL_USER_FILE: /run/secrets/staging_mysql_user
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+      MYSQL_USER_FILE: /run/secrets/mysql_user
     volumes:
-      - staging_db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
     secrets:
-      - staging_mysql_root_password
-      - staging_mysql_password
-      - staging_mysql_user
+      - mysql_root_password
+      - mysql_password
+      - mysql_user
 
   adminer:
     image: adminer
@@ -44,19 +45,19 @@ services:
     environment:
       WORDPRESS_DB_HOST: mariadb:3306
       WORDPRESS_DB_NAME: %%PROJECT_NAME%%_staging
-      WORDPRESS_DB_USER_FILE: /run/secrets/staging_mysql_user
-      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/staging_mysql_password
+      WORDPRESS_DB_USER_FILE: /run/secrets/mysql_user
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_password
     volumes:
-      - staging_wp_data:/var/www/html
+      - wp_data:/var/www/html
     secrets:
-      - staging_mysql_password
-      - staging_mysql_user
+      - mysql_password
+      - mysql_user
     depends_on:
       - mariadb
 
 volumes:
-  staging_wp_data:
-  staging_db_data:
+  wp_data:
+  db_data:
 
 networks:
   overlord_proxy:
@@ -64,14 +65,14 @@ networks:
   staging:
 
 secrets:
-  staging_mysql_root_password:
+  mysql_root_password:
     file: ./secrets/staging_mysql_root_password.txt
-  staging_mysql_password:
+  mysql_password:
     file: ./secrets/staging_mysql_password.txt
-  staging_mysql_user:
+  mysql_user:
     file: ./secrets/staging_mysql_user.txt
-  staging_app_wordpress_username:
+  app_wordpress_username:
     file: ./secrets/staging_app_wordpress_username.txt
-  staging_app_wordpress_pwd:
+  app_wordpress_pwd:
     file: ./secrets/staging_app_wordpress_pwd.txt
     
