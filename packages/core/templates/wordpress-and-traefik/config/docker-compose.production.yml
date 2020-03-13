@@ -21,7 +21,7 @@ services:
     networks:
       - overlord_proxy
     environment:
-      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_HOST: %%PROJECT_NAME%%_production_mariadb:3306
       WORDPRESS_DB_NAME: %%PROJECT_NAME%%_production
       WORDPRESS_DB_USER_FILE: /run/secrets/mysql_user
       WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_password
@@ -31,7 +31,7 @@ services:
       - mysql_password
       - mysql_user
     depends_on:
-      - mariadb
+      - %%PROJECT_NAME%%_production_mariadb
 
   mariadb:
     image: mariadb
