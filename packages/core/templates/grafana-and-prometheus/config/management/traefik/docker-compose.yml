@@ -1,0 +1,26 @@
+version: '3.2'
+
+services:
+  app:
+     image: traefik:v2.1.6
+     volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
+       - ./traefik.toml:/etc/traefik/traefik.toml
+       - ./acme:/etc/traefik/acme
+       - ./log:/etc/traefik/log
+     ports:
+       - 80:80
+       - 443:443
+       - 8100:8080
+       - 8200:8200
+       - 9090:9090
+     deploy:
+       mode: global
+       placement:
+         constraints:
+           - node.role == manager
+     
+networks:
+   default:
+    external:
+      name:  lacolonia-proxy-net

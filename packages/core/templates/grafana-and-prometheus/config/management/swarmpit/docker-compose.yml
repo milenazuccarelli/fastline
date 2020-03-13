@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+ app:
+   image: swarmpit/swarmpit:latest
+   environment:
+     SWARMPIT_DB: http://db:5984
+   volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+   networks:
+     - lacolonia-proxy-net
+     - swarmpit-net
+   deploy:
+     labels:
+        # Explicitly tell Traefik to expose this container
+        - "traefik.enable=true" 
+        # Get the routes from swarmpit
+        - "traefik.http.routers.management_swarmpit_app.rule=Host(`%%SERVER_DOMAIN%%`)"
+        - "traefik.http.routers.management_swarmpit_app.entrypoints=swarmpit"
+        # Redirect these routes to https
+        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+        - "traefik.http.routers.management_swarmpit_app.middlewares=redirect-to-https"
+        # Get the routes from swarmpit-secure
+        - "traefik.http.routers.management_swarmpit_app-secure.rule=Host(`%%SERVER_DOMAIN%%`)"
+        - "traefik.http.routers.management_swarmpit_app-secure.entrypoints=swarmpit"
+        - "traefik.http.routers.management_swarmpit_app-secure.tls=true"
+        - "traefik.http.routers.management_swarmpit_app-secure.tls.certresolver=myresolver"
+        # Specify the port to use for communication
+        - "traefik.http.services.management_swarmpit_app.loadbalancer.server.port=8080"
+     placement:
+       constraints:
+         - node.role == manager
+ db:
+   image: klaemo/couchdb:2.0.0
+   volumes:
+     - db-data:/opt/couchdb/data
+   networks:
+     - swarmpit-net
+   deploy:
+     placement:
+       constraints:
+         - node.role == manager
+networks:
+   default:
+    external:
+      name:  lacolonia-cloud-net
+   lacolonia-proxy-net:
+      external: true
+   swarmpit-net:
+
+volumes:
+   db-data:
+      driver: local

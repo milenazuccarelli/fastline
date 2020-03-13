@@ -1,0 +1,7 @@
+# Ignore logs
+log/*
+!log/*.gitkeep
+
+# Ignore certificates
+acme/*
+!acme/README.md
