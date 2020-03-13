@@ -10,11 +10,11 @@ services:
       WORDPRESS_API_URL: "%%WORDPRESS_API_URL%%"
       SITE_URL: "%%SITE_URL%%"
       GA_ID: ""
-      WORDPRESS_USERNAME_FILE: /run/secrets/production_app_wordpress_username
-      WORDPRESS_PASSWORD_FILE: /run/secrets/production_app_wordpress_pwd
+      WORDPRESS_USERNAME_FILE: /run/secrets/app_wordpress_username
+      WORDPRESS_PASSWORD_FILE: /run/secrets/app_wordpress_pwd
     secrets:
-      - production_app_wordpress_username
-      - production_app_wordpress_pwd
+      - app_wordpress_username
+      - app_wordpress_pwd
 
   admin:
     image: wordpress:5.3-php7.2-apache
@@ -23,13 +23,13 @@ services:
     environment:
       WORDPRESS_DB_HOST: mariadb:3306
       WORDPRESS_DB_NAME: %%PROJECT_NAME%%_production
-      WORDPRESS_DB_USER_FILE: /run/secrets/production_mysql_user
-      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/production_mysql_password
+      WORDPRESS_DB_USER_FILE: /run/secrets/mysql_user
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_password
     volumes:
-      - production_wp_data:/var/www/html
+      - wp_data:/var/www/html
     secrets:
-      - production_mysql_password
-      - production_mysql_user
+      - mysql_password
+      - mysql_user
     depends_on:
       - mariadb
 
@@ -40,15 +40,15 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: %%PROJECT_NAME%%_production
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/production_mysql_root_password
-      MYSQL_PASSWORD_FILE: /run/secrets/production_mysql_password
-      MYSQL_USER_FILE: /run/secrets/production_mysql_user
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+      MYSQL_USER_FILE: /run/secrets/mysql_user
     volumes:
-      - production_db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
     secrets:
-      - production_mysql_root_password
-      - production_mysql_password
-      - production_mysql_user
+      - mysql_root_password
+      - mysql_password
+      - mysql_user
 
   adminer:
     image: adminer
@@ -57,21 +57,21 @@ services:
     restart: always
 
 volumes:
-  production_wp_data:
-  production_db_data:
+  wp_data:
+  db_data:
 
 networks:
   overlord_proxy:
     external: true
 
 secrets:
-  production_mysql_root_password:
+  mysql_root_password:
     file: ./secrets/production_mysql_root_password.txt
-  production_mysql_password:
+  mysql_password:
     file: ./secrets/production_mysql_password.txt
-  production_mysql_user:
+  mysql_user:
     file: ./secrets/production_mysql_user.txt
-  production_app_wordpress_username:
+  app_wordpress_username:
     file: ./secrets/production_app_wordpress_username.txt
-  production_app_wordpress_pwd:
+  app_wordpress_pwd:
     file: ./secrets/production_app_wordpress_pwd.txt
