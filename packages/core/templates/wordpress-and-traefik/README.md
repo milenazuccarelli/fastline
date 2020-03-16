@@ -21,7 +21,15 @@ Production
 production-build
 
 3. go to settings > repository variables
-add your variables. For your gcr key you will need to do the following:
+add your variables:
+
+- ENDPOINT
+- BASIC_AUTH_USER
+- BASIC_AUTH_PASSWORD
+- GA_TRACKING_ID
+
+ For your gcr key you will need to do the following:
+
 
 4. go to settings > SSH keys
 add your public key, private key, and fingerprint. make sure to add the public key to the known hosts of the server if it is not already.
