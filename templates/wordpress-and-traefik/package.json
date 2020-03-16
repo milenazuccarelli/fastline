@@ -1,19 +1,15 @@
 {
-  "name": "@fastline/wordpress-and-node-app",
+  "name": "@fastline/wordpress-and-traefik-app",
   "version": "1.0.1",
-  "description": "A template for Fastline library which bootstrap a Docker setup with a Wordpress and a Node application. ",
+  "description": "A template for Fastline library which bootstrap a Docker and Traefik setup with a Wordpress and Next.js app. ",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "wordpress",
     "docker",
     "node"
   ],
-  "author": "info@alessandrobarbieri.net",
+  "author": "milena.zuccarelli@gmail.com",
   "license": "GPL-2.0-or-later",
-  "gitHead": "634d272983f3fd0ec6db3353a273886c8914542b",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/a-barbieri/fastline.git"
