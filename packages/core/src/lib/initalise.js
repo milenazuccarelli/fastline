@@ -30,30 +30,63 @@ async function setUpDirectory(destDir, target, keys, patterns, replacements) {
     let pathToWrite = `${target}/${pathTree}`;
 
     // first, copy the file
-    await fse.copy(file, pathToWrite, {
-      overwrite: false,
-      errorOnExist: true
-    });
-
-    let fileToWrite = await fse.readFile(pathToWrite, "utf8");
-    let convertedExpression;
-
-    for (let variable in keys) {
-      convertedExpression = new RegExp(patterns[variable], "g");
-      fileToWrite = fileToWrite.replace(
-        convertedExpression,
-        replacements[variable]
+    async function copyFiles() {
+      await fse.copy(
+        file,
+        pathToWrite,
+        {
+          overwrite: false,
+          errorOnExist: true
+        },
+        err => {
+          if (err) {
+            console.log(err);
+          } else {
+            readFiles();
+          }
+        }
       );
     }
+    copyFiles();
 
-    // then overwrite
-    await fse.outputFile(pathToWrite, fileToWrite, err => {
-      // console.log(err); // => null
+    let fileToWrite;
+    let whatToWrite;
 
-      fse.readFile(fileToWrite, "utf8", (err, data) => {
-        if (err) return err;
-        // console.log(data); // => overwritten data
+    async function readFiles() {
+      await fse.readFile(pathToWrite, "utf8", (err, data) => {
+        if (err) {
+          console.log(err);
+        } else {
+          let convertedExpression;
+
+          for (let variable in keys) {
+            convertedExpression = new RegExp(patterns[variable], "g");
+
+            whatToWrite = fileToWrite ? fileToWrite : data;
+
+            fileToWrite = whatToWrite.replace(
+              convertedExpression,
+              replacements[variable]
+            );
+          }
+
+          overwriteFiles(fileToWrite);
+        }
       });
-    });
+    }
+
+    async function overwriteFiles(fileToWrite) {
+      // Ignore certain extentions path.extname(pathToWrite)
+
+      // then overwrite
+      await fse.outputFile(pathToWrite, fileToWrite, err => {
+        // console.log(err); // => null
+
+        fse.readFile(fileToWrite, "utf8", (err, data) => {
+          if (err) console.log(err);
+          // console.log(data); // => overwritten data
+        });
+      });
+    }
   });
 }
