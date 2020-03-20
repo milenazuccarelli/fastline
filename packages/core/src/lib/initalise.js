@@ -8,6 +8,9 @@ import path from "path";
  *
  * @param destDir {String} Absolute path
  * @param target {String} name of directory inside templates dir, eg. `my/path/to/file` (no initial slash)
+ * @param keys {Array}
+ * @param patterns {Array}
+ * @param replacements {Array}
  * @return {Promise}
  **/
 export async function setup(destDir, target, keys, patterns, replacements) {
@@ -29,64 +32,65 @@ async function setUpDirectory(destDir, target, keys, patterns, replacements) {
     let pathTree = path.relative(`${sourceDir}/${destDir}/config`, file);
     let pathToWrite = `${target}/${pathTree}`;
 
-    // first, copy the file
-    async function copyFiles() {
-      await fse.copy(
-        file,
-        pathToWrite,
-        {
-          overwrite: false,
-          errorOnExist: true
-        },
-        err => {
-          if (err) {
-            console.log(err);
-          } else {
-            readFiles();
-          }
-        }
-      );
+    // copy the file
+    copyFiles(file, pathToWrite, keys, patterns, replacements);
+  });
+}
+
+async function copyFiles(file, pathToWrite, variable, keys, patterns) {
+  await fse.copy(
+    file,
+    pathToWrite,
+    {
+      overwrite: false,
+      errorOnExist: true
+    },
+    err => {
+      if (err) {
+        console.log(err);
+      } else {
+        readFiles(pathToWrite, variable, keys, patterns);
+      }
     }
-    copyFiles();
+  );
+}
 
-    let fileToWrite;
-    let whatToWrite;
+async function readFiles(pathToWrite, keys, patterns, replacements) {
+  let fileToWrite;
+  let whatToWrite;
 
-    async function readFiles() {
-      await fse.readFile(pathToWrite, "utf8", (err, data) => {
-        if (err) {
-          console.log(err);
-        } else {
-          let convertedExpression;
+  await fse.readFile(pathToWrite, "utf8", (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      let convertedExpression;
 
-          for (let variable in keys) {
-            convertedExpression = new RegExp(patterns[variable], "g");
+      for (let variable in keys) {
+        convertedExpression = new RegExp(patterns[variable], "g");
 
-            whatToWrite = fileToWrite ? fileToWrite : data;
+        whatToWrite = fileToWrite ? fileToWrite : data;
 
-            fileToWrite = whatToWrite.replace(
-              convertedExpression,
-              replacements[variable]
-            );
-          }
+        fileToWrite = whatToWrite.replace(
+          convertedExpression,
+          replacements[variable]
+        );
+      }
 
-          overwriteFiles(fileToWrite);
-        }
-      });
+      overwriteFiles(pathToWrite, fileToWrite);
     }
+  });
+}
 
-    async function overwriteFiles(fileToWrite) {
-      // Ignore certain extentions path.extname(pathToWrite)
+async function overwriteFiles(pathToWrite, fileToWrite) {
+  // Ignore certain extentions path.extname(pathToWrite)
 
-      // then overwrite
-      await fse.outputFile(pathToWrite, fileToWrite, err => {
-        // console.log(err); // => null
+  // then overwrite
+  await fse.outputFile(pathToWrite, fileToWrite, err => {
+    // console.log(err); // => null
 
-        fse.readFile(fileToWrite, "utf8", (err, data) => {
-          if (err) console.log(err);
-          // console.log(data); // => overwritten data
-        });
-      });
-    }
+    fse.readFile(fileToWrite, "utf8", (err, data) => {
+      if (err) console.log(err);
+      // console.log(data); // => overwritten data
+    });
   });
 }
