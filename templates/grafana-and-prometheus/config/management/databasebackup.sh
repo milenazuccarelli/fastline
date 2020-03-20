@@ -10,10 +10,6 @@
 
 # set -x
 
-# Set envars
-CONTAINER=db
-IMAGE=postgres
-
 # Parse YML: future reference
 parse_yaml() {
     local prefix=$2
@@ -41,18 +37,17 @@ do
     then
         # Inspect the container and find the image it's created from
         findImages=$(docker container inspect ${d} --format='{{.Config.Image}}')
+        # Get the date to append to the image
+        newFileDate=$(date '+%Y%m%d-%H%M%S')
         # Check if image is postgres or mariadb
-        if [[ "$findImages" == *"$IMAGE"* ]]
+        if [[ "$findImages" == *"postgres"* ]]
         then
             echo "Processing ${d}"
-            # Get the date to append to the image
-            newFileDate=$(date '+%Y%m%d-%H%M%S')
             # Inspect the image and get the envar `POSTGRES_PASSWORD` if needed
-            password=$(docker container inspect $d  | grep POSTGRES_PASSWORD | cut -f2 -d '=' | sed 's/",//')
+            postgresPassword=$(docker container inspect $d  | grep POSTGRES_PASSWORD | cut -f2 -d '=' | sed 's/",//')
             # Exec into the container, get a list of the database names and clean up
-            databaseNames=$(docker container exec $d sh -c 'exec psql -U postgres -lqt | cut -d \| -f 1 | sed "/^[[:space:]]*$/d"')
-            
-            for databaseName in ${databaseNames}
+            postgresDatabaseNames=$(docker container exec $d sh -c 'exec psql -U postgres -lqt | cut -d \| -f 1 | sed "/^[[:space:]]*$/d"')
+            for databaseName in ${postgresDatabaseNames}
             do
                 echo "${databaseName}"
                 # Get the container name and cut it from the first dot
@@ -60,7 +55,25 @@ do
                 # Ignore postgres' `template0` and `template1`
                 if [[ ${databaseName} != "template0" ]] && [[ ${databaseName} != "template1" ]]
                 then
-                    docker container exec $d sh -c "exec pg_dump -U postgres ${databaseName} > /TEST/${serviceName}-${databaseName}-${newFileDate}.sql"
+                    docker container exec $d sh -c "exec pg_dump -U postgres ${databaseName} > /backups/${serviceName}-${databaseName}-${newFileDate}.sql"
+                fi
+            done
+        elif [[ "$findImages" == *"mariadb"* ]] || [[ "$findImages" == *"mysql"* ]]
+        then
+            echo "Processing ${d}"
+            # Inspect the image and get the envar `MYSQL_ROOT_PASSWORD_FILE`. We are assuming the compose file is using a file.
+            mysqlPasswordFile=$(docker container inspect $d  | grep MYSQL_ROOT_PASSWORD_FILE | cut -f2 -d '=' | sed 's/",//')
+            mysqlPassword=$(docker container exec $d sh -c "cat ${mysqlPasswordFile}")
+            mysqlDatabaseNames=$(docker container exec $d sh -c "exec mysql -N -u root -p${mysqlPassword} -e 'show databases;'")
+            for databaseName in ${mysqlDatabaseNames}
+            do
+                echo "${databaseName}"
+                # Get the container name and cut it from the first dot
+                serviceName=$(echo "${d}" | cut -f1 -d'.')
+                # Ignore mysql `information_schema` and `performance_schema`
+                if [[ ${databaseName} != "information_schema" ]] && [[ ${databaseName} != "performance_schema" ]]
+                then
+                    docker container exec $d sh -c "exec mysqldump -u root -p${mysqlPassword} ${databaseName} > /backups/${serviceName}-${databaseName}-${newFileDate}.sql"
                 fi
             done
         fi
