@@ -11,7 +11,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      WORDPRESS_API_URL: %%WORDPRESS_API_URL%%
+      WORDPRESS_API_URL: "%%WORDPRESS_API_URL%%"
       SITE_URL: "http://localhost:3000"
     secrets:
       - app_wordpress_username
@@ -21,7 +21,7 @@ services:
     image: mariadb
     restart: always
     environment:
-      MYSQL_DATABASE: %%MYSQL_DATABASE%%
+      MYSQL_DATABASE: "%%MYSQL_DATABASE%%"
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
       MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
       MYSQL_USER_FILE: /run/secrets/mysql_user
@@ -44,7 +44,7 @@ services:
     image: wordpress:latest
     environment:
       WORDPRESS_DB_HOST: mariadb:3306
-      WORDPRESS_DB_NAME: %%MYSQL_DATABASE%%
+      WORDPRESS_DB_NAME: "%%MYSQL_DATABASE%%"
       WORDPRESS_DB_USER_FILE: /run/secrets/mysql_user
       WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_password
     depends_on:
