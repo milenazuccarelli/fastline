@@ -74,7 +74,6 @@ docker-compose run web rake db:create
 Here is an example of the output from that command:
 
 ```
-vmb at snapair in ~/sandbox/rails
 $ docker-compose run web rake db:create
 Starting rails_db_1 ... done
 Created database 'myapp_development'
