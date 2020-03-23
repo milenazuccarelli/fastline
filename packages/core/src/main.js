@@ -16,9 +16,7 @@ export default async () => {
   const templateName = secondAnswers["destDir"];
 
   // get the items that need to be replaced
-  // depending on the template type
-  // TODO: template object should be taken from each template package
-
+  // based on the template variable file
   const template = await fse.readFile(
     `${firstAnswers["templates"]}/${templateName}/template.json`
   );
