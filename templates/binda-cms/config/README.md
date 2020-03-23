@@ -1,6 +1,6 @@
 # %%PROJECT_NAME%%
 
-A Rails application with Binda CMS
+A Rails application with Binda CMS.
 
 ## Installation
 
@@ -84,3 +84,5 @@ Created database 'myapp_test'
 Your app should now be running on port 3000 on your Docker daemon.
 
 On Docker Desktop for Mac and Docker Desktop for Windows, go to http://localhost:3000 on a web browser to see the Rails Welcome.
+
+![Yay! your're on Rails!](./doc/rails_welcome.png)
