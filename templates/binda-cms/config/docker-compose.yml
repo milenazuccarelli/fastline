@@ -10,8 +10,8 @@ services:
       - ./web:/myapp
     environment:
       POSTGRES_HOST: db
-      POSTGRES_PASSWORD: "%%DEVELOPMENT__POSTGRES_PASSWORD%%"
-      RAILS_MASTER_KEY: "%%RAILS_MASTER_KEY%%"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
     depends_on:
       - db
 
@@ -19,7 +19,7 @@ services:
     image: postgres:10
     restart: always
     environment:
-      POSTGRES_PASSWORD: "%%DEVELOPMENT__POSTGRES_PASSWORD%%"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - db-data:/var/lib/postgresql/data
 
