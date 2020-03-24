@@ -2,17 +2,23 @@
 
 A Rails application with Binda CMS.
 
-## Installation
+## Manual Installation
 
 Generate a fresh rails app:
 ```
 docker-compose run web rails new . --database=postgresql
 ```
 
-Copy master.key paste it into the docker
+Since rails master key is shared by both development, production and staging it's better not to include `config/master.key` inside the containers. The key should be set in a environment variable called `RAILS_MASTER_KEY`.
 
+Copy and paste contents of `config/master.key` into `.env`
 
-Now that you’ve got a new Gemfile, you need to build the image again. (This, and changes to the Gemfile or the Dockerfile, should be the only times you’ll need to rebuild.)
+Paste the value into `.env`.
+```
+echo "RAILS_MASTER_KEY=$(cat web/config/master.key)" >> .env
+```
+
+Now that you’ve got a new Gemfile and a master key, you need to build the image again. (This, and changes to the Gemfile or the Dockerfile, should be the only times you’ll need to rebuild.)
 
 ```
 docker-compose build
