@@ -68,13 +68,13 @@ db_1   | 2018-03-21 20:18:37.772 UTC [1] LOG:  database system is ready to accep
 Finally, you need to create the database. In another terminal, run:
 
 ```
-docker-compose run web rake db:create
+docker-compose run web rails db:create
 ```
 
 Here is an example of the output from that command:
 
 ```
-$ docker-compose run web rake db:create
+$ docker-compose run web rails db:create
 Starting rails_db_1 ... done
 Created database 'myapp_development'
 Created database 'myapp_test'
@@ -87,3 +87,30 @@ On Docker Desktop for Mac and Docker Desktop for Windows, go to http://localhost
 <p align="center">
   <img alt="Yay! your're on Rails!" src="./doc/rails_welcome.png" width="500px">
 </p>
+
+### Install Binda
+
+Stop running containers:
+```
+docker-compose down
+```
+
+Add this line to `web/Gemfile`
+
+```
+gem 'binda'
+```
+
+Then rebuild the web service and restart containers:
+```
+docker-compose build web && docker-compose up
+```
+
+Before completing the installation you need to setup the database. If you are going to use Postgres set it up now.
+
+To complete binda installation run the installer inside the web container. Binda will take you through a short configuration process where you will setup the first user and some basic details.
+```
+docker container exec -it %%REPOSITORY_NAME%%_web_1 rails generate binda:install
+```
+
+When it's done you can go to http://localhost:3000/admin_panel and insert the credentials you just created.
