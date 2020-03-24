@@ -31,5 +31,3 @@ file 'config/database.yml', <<-CODE
       database: myapp_production
       password: <%= ENV['POSTGRES_PASSWORD'] %>
 CODE
-
-
