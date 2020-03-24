@@ -2,7 +2,7 @@
 
 A Rails application with Binda CMS.
 
-## Installation
+## Manual Installation
 
 Generate a rails skeleton using the provided template file.
 
