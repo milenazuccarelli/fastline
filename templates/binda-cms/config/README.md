@@ -6,7 +6,7 @@ A Rails application with Binda CMS.
 
 Generate a fresh rails app:
 ```
-docker-compose run web rails new . --force --no-deps --database=postgresql
+docker-compose run web rails new . --database=postgresql
 ```
 
 Copy master.key paste it into the docker
