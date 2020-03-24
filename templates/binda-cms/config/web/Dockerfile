@@ -21,8 +21,8 @@ ENV PATH "$PATH:/usr/bin/yarn"
 
 RUN mkdir /myapp
 WORKDIR /myapp
-COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
+COPY template.rb /myapp/template.rb
 RUN bundle install
 COPY . /myapp
 RUN yarn install
