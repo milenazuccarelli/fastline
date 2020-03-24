@@ -10,10 +10,15 @@ Generate a rails skeleton using the provided template file.
 docker-compose run web rails new . -m template.rb --force --database=postgresql
 ```
 
-Now that every file is in place you can create the containers:
+Now that every file is in place you can build the images:
 
 ```
-docker-compose down && docker-compose up -d
+docker-compose build
+```
+
+Then create the containers with docker compose up:
+```
+docker-compose down && docker-compose up
 
 ```
 
@@ -31,16 +36,16 @@ db_1   | 2018-03-21 20:18:37.726 UTC [55] LOG:  database system was shut down at
 db_1   | 2018-03-21 20:18:37.772 UTC [1] LOG:  database system is ready to accept connections
 ```
 
-Finally, you need to create the database. run:
+Finally, you need to create the database. open another termina and run:
 
 ```
-docker-compose run web rails db:create
+docker container exec %%REPOSITORY_NAME%%_web_1 rails db:create
 ```
 
 Here is an example of the output from that command:
 
 ```
-$ docker-compose run web rails db:create
+$ docker container exec %%REPOSITORY_NAME%%_web_1 rails db:create
 Starting rails_db_1 ... done
 Created database 'myapp_development'
 Created database 'myapp_test'
