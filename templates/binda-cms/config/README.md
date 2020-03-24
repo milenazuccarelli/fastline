@@ -13,7 +13,7 @@ docker-compose run web rails new . -m template.rb --force --database=postgresql
 Now that every file is in place you can create the containers:
 
 ```
-docker-compose up -d
+docker-compose down && docker-compose up -d
 
 ```
 
