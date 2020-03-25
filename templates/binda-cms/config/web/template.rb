@@ -1,9 +1,6 @@
 # Add gems
 gem "binda"
 
-# Install dependencies
-run "bundle install"
-
 # Remove git repository
 run "rm -rf .git"
 
