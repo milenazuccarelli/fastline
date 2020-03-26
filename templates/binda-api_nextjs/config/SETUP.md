@@ -40,6 +40,12 @@ Then run the following command to install Binda CMS:
 rails generate binda:install
 ```
 
+Install Binda API:
+
+```
+rails binda_api:install:migrations && rails db:migrate
+```
+
 Finally you may need to update your dependencies and reboot the rails application:
 ```
 bundle install && touch tmp/restart.txt
