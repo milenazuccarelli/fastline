@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+  admin:
+    build: ./admin
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+    ports:
+      - "5000:3000"
+    volumes:
+      - ./admin:/myapp
+    environment:
+      POSTGRES_HOST: admin-db
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - admin-db
+
+  admin-db:
+    image: postgres:10
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: ./app
+    tty: true # Enables debugging capabilities when attached to this container. (read)
+    stdin_open: true # Enables debugging capabilities when attached to this container. (write)
+    volumes:
+      - ./app:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+
+volumes:
+  db-data:
