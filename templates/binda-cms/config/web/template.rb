@@ -1,5 +1,5 @@
 # Add gems
-gem "binda"
+gem 'binda', '~> 0.1.11'
 
 # Remove git repository
 run "rm -rf .git"
