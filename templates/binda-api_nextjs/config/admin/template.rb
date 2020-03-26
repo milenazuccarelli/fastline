@@ -1,6 +1,6 @@
 # Add gems
-gem "binda"
-gem "binda-api"
+gem 'binda', '~> 0.1.11'
+gem 'binda-api', github: "BindaCMS/binda-api", tag: "v0.2.0.alpha.2" 
 
 # Remove git repository
 run "rm -rf .git"
