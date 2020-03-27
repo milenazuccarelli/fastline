@@ -71,17 +71,13 @@ async function getFirstAnswers() {
       type: "input",
       name: "target",
       message: "Enter the absolute path to your directory",
-      default: function() {
-        return "/Users/zucca/Documents/lacolonia/software/fastline-test";
-      }
+      default: process.cwd()
     },
     {
       type: "input",
       name: "templates",
       message: "Choose a template directory or use the default templates",
-      default: function() {
-        return FL.TEMPLATES_DIR;
-      }
+      default: FL.TEMPLATES_DIR
     }
   ]);
 }
@@ -103,9 +99,7 @@ async function getVariableReplacement(key, value) {
       type: "input",
       name: "target",
       message: `Enter the value for your ${key}`,
-      default: function() {
-        return value;
-      }
+      default: value
     }
   ]);
 }
