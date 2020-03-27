@@ -1,0 +1,78 @@
+version: "3.7"
+
+services:
+  app:
+    image: "eu.gcr.io/lacolonia/%%PROJECT_NAME%%_app:staging"
+    networks:
+      - overlord_proxy
+    restart: always
+    environment:
+      WORDPRESS_API_URL: "%%WORDPRESS_API_URL%%"
+      SITE_URL: "%%SITE_URL%%"
+      WORDPRESS_USERNAME_FILE: /run/secrets/app_wordpress_username
+      WORDPRESS_PASSWORD_FILE: /run/secrets/app_wordpress_pwd
+  secrets:
+    - app_wordpress_username
+    - app_wordpress_pwd
+
+  mariadb:
+    image: mariadb
+    networks:
+      - overlord_proxy
+    restart: always
+    environment:
+      MYSQL_DATABASE: %%PROJECT_NAME%%_staging
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+      MYSQL_USER_FILE: /run/secrets/mysql_user
+    volumes:
+      - db_data:/var/lib/mysql
+    secrets:
+      - mysql_root_password
+      - mysql_password
+      - mysql_user
+
+  adminer:
+    image: adminer
+    networks:
+      - overlord_proxy
+    restart: always
+
+  admin:
+    image: wordpress:5.3-php7.2-apache
+    networks:
+      - overlord_proxy
+    environment:
+      WORDPRESS_DB_HOST: %%PROJECT_NAME%%_staging_mariadb:3306
+      WORDPRESS_DB_NAME: %%PROJECT_NAME%%_staging
+      WORDPRESS_DB_USER_FILE: /run/secrets/mysql_user
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_password
+    volumes:
+      - wp_data:/var/www/html
+    secrets:
+      - mysql_password
+      - mysql_user
+    depends_on:
+      - %%PROJECT_NAME%%_staging_mariadb
+
+volumes:
+  wp_data:
+  db_data:
+
+networks:
+  overlord_proxy:
+    external: true
+  staging:
+
+secrets:
+  mysql_root_password:
+    file: ./secrets/staging_mysql_root_password.txt
+  mysql_password:
+    file: ./secrets/staging_mysql_password.txt
+  mysql_user:
+    file: ./secrets/staging_mysql_user.txt
+  app_wordpress_username:
+    file: ./secrets/staging_app_wordpress_username.txt
+  app_wordpress_pwd:
+    file: ./secrets/staging_app_wordpress_pwd.txt
+    
