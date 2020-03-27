@@ -1,0 +1,10 @@
+{
+  "name": "@fastline/binda-api_nextjs",
+  "version": "0.1.0",
+  "description": "A template for Fastline library which bootstrap a NextJS app with Binda API",
+  "main": "index.js",
+  "repository": "https://github.com/lorenzorivosecchi/fastline",
+  "author": "lorenzo.rivosecchi@lacolonia.studio",
+  "license": "GPL-2.0-or-later",
+  "private": false
+}
