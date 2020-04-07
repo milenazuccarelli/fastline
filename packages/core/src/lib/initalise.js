@@ -1,6 +1,6 @@
 import fse from "fs-extra";
 import { FL } from "../config/init";
-import { walk } from "../utils/common-functions";
+import { asyncForEach, walk } from "../utils/common-functions";
 import path from "path";
 
 /**
@@ -20,77 +20,87 @@ export async function setup(destDir, target, keys, patterns, replacements) {
     );
   }
 
-  setUpDirectory(destDir, target, keys, patterns, replacements);
+  return await setUpDirectory(destDir, target, keys, patterns, replacements);
 }
 
+/**
+ * Setup Directory
+ *
+ * @param destDir {String} Absolute path
+ * @param target {String}
+ * @param keys {Array}
+ * @param patterns {Array}
+ * @param replacements {Array}
+ **/
 async function setUpDirectory(destDir, target, keys, patterns, replacements) {
   const sourceDir = FL.TEMPLATES_DIR;
   let configuration = await walk(`${sourceDir}/${destDir}/config`);
 
-  configuration.forEach(async file => {
+  return await asyncForEach(configuration, async file => {
     // construct the directory tree
     let pathTree = path.relative(`${sourceDir}/${destDir}/config`, file);
     let pathToWrite = `${target}/${pathTree}`;
 
     // copy the file
-    copyFiles(file, pathToWrite, keys, patterns, replacements);
+    return await copyFiles(file, pathToWrite, keys, patterns, replacements);
   });
 }
 
-async function copyFiles(file, pathToWrite, variable, keys, patterns) {
-  await fse.copy(
-    file,
-    pathToWrite,
-    {
+/**
+ * Copy Files
+ *
+ * @param file {String}
+ * @param pathToWrite {String}
+ * @param keys {Array}
+ * @param patterns {Array}
+ * @param replacements {Array}
+ * */
+async function copyFiles(file, pathToWrite, keys, patterns, replacements) {
+  return await fse
+    .copy(file, pathToWrite, {
       overwrite: false,
       errorOnExist: true
-    },
-    err => {
-      if (err) {
-        console.log(err);
-      } else {
-        readFiles(pathToWrite, variable, keys, patterns);
-      }
-    }
-  );
-}
-
-async function readFiles(pathToWrite, keys, patterns, replacements) {
-  let fileToWrite;
-  let whatToWrite;
-
-  await fse.readFile(pathToWrite, "utf8", (err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      let convertedExpression;
-
-      for (let variable in keys) {
-        convertedExpression = new RegExp(patterns[variable], "g");
-
-        whatToWrite = fileToWrite ? fileToWrite : data;
-
-        fileToWrite = whatToWrite.replace(
-          convertedExpression,
-          replacements[variable]
-        );
-      }
-
-      overwriteFiles(pathToWrite, fileToWrite);
-    }
-  });
-}
-
-async function overwriteFiles(pathToWrite, fileToWrite) {
-  // Ignore certain extentions path.extname(pathToWrite)
-
-  // then overwrite
-  await fse.outputFile(pathToWrite, fileToWrite, err => {
-    // console.log(err); // => null
-
-    fse.readFile(fileToWrite, "utf8", (err, data) => {
-      if (err) console.log(err);
-      // console.log(data); // => overwritten data
+    })
+    .then(async () => {
+      return await readFiles(pathToWrite, keys, patterns, replacements);
     });
+}
+
+/**
+ * Read Files
+ *
+ * @param pathToWrite {String}
+ * @param keys {Array}
+ * @param patterns {Array}
+ * @param replacements {Array}
+ * */
+async function readFiles(pathToWrite, keys, patterns, replacements) {
+  return await fse.readFile(pathToWrite, "utf8").then(async data => {
+    let convertedExpression;
+
+    let whatToWrite = data;
+
+    for (let variable in keys) {
+      convertedExpression = new RegExp(patterns[variable], "g");
+
+      // Replace placeholder with the actual value provided by the user.
+      whatToWrite = whatToWrite.replace(
+        convertedExpression,
+        replacements[variable]
+      );
+    }
+    return await overwriteFiles(pathToWrite, whatToWrite);
   });
+}
+
+/**
+ * Overwrite Files
+ *
+ * @param pathToWrite {String}
+ * @param whatToWrite {String}
+ * */
+async function overwriteFiles(pathToWrite, whatToWrite) {
+  // TODO: Ignore certain extensions path.extname(pathToWrite)
+  // Overwrite file content.
+  return await fse.outputFile(pathToWrite, whatToWrite);
 }
