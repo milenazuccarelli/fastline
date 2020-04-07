@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  web:
+    build: ./web
+    command: bash -c 'wp_install && apache2-foreground'
+    depends_on:
+      - db
+    env_file: ./.env
+    ports:
+      - "8080:8080"
+    user: www-data
+    volumes:
+      - ./web:/var/www/html
+      - ./web/wp_install.sh:/usr/local/bin/wp_install
+      - ./web/images:/var/www/images
+      - ./web/plugins:/var/www/plugins
+
+  db:
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=${WORDPRESS_DB_NAME}
+      - MYSQL_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      - MYSQL_USER=${WORDPRESS_DB_USER}
+    image: mariadb
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+volumes:
+  db-data:
