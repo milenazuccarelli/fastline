@@ -1,0 +1,10 @@
+{
+  "name": "@fastline/wordpress-cms",
+  "version": "0.1.0",
+  "description": "A template for Fastline library which bootstraps a Docker setup for Wordpress.",
+  "main": "index.js",
+  "repository": "https://github.com/milenazuccarelli/fastline",
+  "author": "milena.zuccarelli@lacolonia.studio",
+  "license": "GPL-2.0-or-later",
+  "private": false
+}
