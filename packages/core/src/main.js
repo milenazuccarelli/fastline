@@ -23,8 +23,6 @@ export default async () => {
 
   const templateJSON = JSON.parse(template);
 
-  console.log(templateJSON);
-
   let replacements = {};
 
   // loop through the keys for the specified template
@@ -62,7 +60,16 @@ export default async () => {
   const target = firstAnswers["target"];
 
   // run the setup based on these answers
-  setup(destDir, target, keys, regexPatterns, userInputReplacement);
+  setup(destDir, target, keys, regexPatterns, userInputReplacement)
+    .catch(error => {
+      console.error("Something went wrong. Setup failed.");
+      console.error(error.name);
+      console.error(error.message);
+      console.error(error.stack);
+    })
+    .then(data => {
+      console.log("Hey! Setup complete.");
+    });
 };
 
 async function getFirstAnswers() {
@@ -76,7 +83,8 @@ async function getFirstAnswers() {
     {
       type: "input",
       name: "templates",
-      message: "Choose a template directory or use the default templates",
+      message:
+        "Choose a template directory or use the default templates (hit ENTER to select default)",
       default: FL.TEMPLATES_DIR
     }
   ]);

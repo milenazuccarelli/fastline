@@ -28,7 +28,7 @@ afterAll(async () => {
 });
 
 describe("Initialise", () => {
-  it("has some templates files to copy", async () => {
+  it.skip("has some templates files to copy", async () => {
     // Get list of files and directories from a directory.
     const filesList = await walk(sourceDir, {
       source: sourceDir,
@@ -70,7 +70,7 @@ describe("Initialise", () => {
       // await setup(sourceDir, DIR);
     });
 
-    it("copies all templates", async () => {
+    it.skip("copies all templates", async () => {
       const originalFilesList = await walk(sourceDir, {
         source: sourceDir,
         with: ""
